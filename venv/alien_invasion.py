@@ -80,9 +80,7 @@ class AlienInvasion:
         # Restablece las estadísticas del juego.
         self.stats.reset_stats()
         self.game_active = True
-        self.sb.prep_score()
-        self.sb.prep_level()
-        self.sb.prep_ships()
+        self.sb._prep_images()
 
         # Se deshace de los aliens y las balas que quedan.
         self.aliens.empty()

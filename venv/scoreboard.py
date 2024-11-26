@@ -15,13 +15,14 @@ class Scoreboard:
         self.text_color = (30,30,30)
         self.font = pygame.font.SysFont(None,48)
 
-        #Prepara las imagenes de las puntuaciones iniciales.
+        self._prep_images()
+
+    def _prep_images(self):
+        # Prepara las imagenes de las puntuaciones iniciales.
         self.prep_score()
         self.prep_high_score()
         self.prep_level()
         self.prep_ships()
-
-
 
     def prep_score(self):
         '''Convierte la puntuación en una imagen renderizada.'''
