@@ -54,6 +54,7 @@ class AlienInvasion:
         # responde a pulsaciones de teclas y eventos de raton
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
+                self._save_high_score()
                 sys.exit()
             #Mover la nave
             elif event.type == pygame.KEYDOWN:
@@ -101,6 +102,7 @@ class AlienInvasion:
         elif event.key == pygame.K_LEFT:
             self.ship.moving_left = True
         elif event.key == pygame.K_q:
+            self._save_high_score()
             sys.exit()
         elif event.key == pygame.K_SPACE:
             self._fire_bullet()
@@ -117,6 +119,10 @@ class AlienInvasion:
         elif event.key == pygame.K_LEFT:
             self.ship.moving_left = False
 
+    def _save_high_score(self):
+        '''Guarda la puntuación mas alta en un archivo.'''
+        with open('high_score.txt', 'w') as file:
+            file.write(str(self.stats.high_score))
 
     def _fire_bullet(self):
         '''Crea una bala y la añade al grupo de balas.'''
