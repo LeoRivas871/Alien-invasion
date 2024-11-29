@@ -1,6 +1,7 @@
 import sys
 from time import sleep
 import pygame
+import random
 from settings import Settings
 from game_stats import GameStats
 from scoreboard import Scoreboard
@@ -8,6 +9,9 @@ from button import Button
 from ship import Ship
 from bullet import Bullet
 from alien import Alien
+from alien_bullet import AlienBullet
+from shield import Shield
+
 
 class AlienInvasion:
     '''Clase general para gestionar los recursos y el comportamiento del juego'''
@@ -29,6 +33,12 @@ class AlienInvasion:
         self.ship = Ship(self)
         self.bullets = pygame.sprite.Group()
         self.aliens = pygame.sprite.Group()
+        self.alien_bullets = pygame.sprite.Group()
+        self.shields = pygame.sprite.Group()
+        # Crear tres escudos en posiciones específicas.
+        for i in range(3):
+            shield = Shield(self, 200 + i * 200, 500)
+            self.shields.add(shield)
 
         self._create_fleet()
         #Inicia Alien Invasion en estado activo.
@@ -128,6 +138,29 @@ class AlienInvasion:
             new_bullet = Bullet(self)
             self.bullets.add(new_bullet)
 
+    def _alien_fire(self):
+        '''Hace que un alienígena dispare una bala.'''
+        if self.aliens: #Solo si hay alienígenas vivos.
+            alien = random.choice(self.aliens.sprites()) #Selecciona al alienígena al azar.
+            bullet = AlienBullet(self,alien)
+            self.alien_bullets.add(bullet) #Añade la bala al grupo.
+
+    def _update_alien_bullets(self):
+        '''Actualiza la posición de las balas alienígenas y comprueba colisiones.'''
+        self.alien_bullets.update() #Actualiza todas las balas.
+
+        #Elimina las balas que salen de la pantalla.
+        for bullet in self.alien_bullets.copy():
+            if bullet.rect.top >= self.settings.screen_height:
+                self.alien_bullets.remove(bullet)
+
+        #Comprueba si alguna bala golpea la nave.
+        if pygame.sprite.spritecollideany(self.ship, self.alien_bullets):
+            self._ship_hit()
+
+        # Comprueba colisiones entre balas alienígenas y escudos.
+        collisions = pygame.sprite.groupcollide(self.alien_bullets, self.shields, True, True)
+
     def _update_bullets(self):
         '''actualiza la posición de las balas y se deshace de las viejas.'''
         #actualiza las posiciones de las balas.
@@ -205,6 +238,11 @@ class AlienInvasion:
         '''Comprueba si la flota esta en un borde, después actualiza las posiciones.'''
         self._check_fleet_edges()
         self.aliens.update()
+
+        #Llama al método para que los aliens disparen aleatoriamente.
+        if random.randint(1,10) <= self.settings.alien_fire_chance:
+            self._alien_fire()
+
         #Busca colisiones alien-nave.
         if pygame.sprite.spritecollideany(self.ship,self.aliens):
             self._ship_hit()
