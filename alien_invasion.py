@@ -30,6 +30,8 @@ class AlienInvasion:
         #Cargar sonido de colisión.
         self.alien_hit_sound = pygame.mixer.Sound('sounds/alien_hit.mp3.mp3')
         self.new_fleet_sound = pygame.mixer.Sound('sounds/nueva_flota.mp3')
+        self.bandera_sonido_flota = False
+
         #Crea una instancia para guardar las estadisticas del juego.
         #Y crea un marcador.
         self.stats = GameStats(self)
@@ -190,7 +192,13 @@ class AlienInvasion:
             self.sb.check_high_score()
 
         if not self.aliens:
+            self.new_fleet_sound.play()
+
+        if not self.aliens:
             self._start_new_level()
+
+
+
 
     def _start_new_level(self):
         #Destruye las balas existentes y crea una flota nueva.
@@ -220,7 +228,7 @@ class AlienInvasion:
             current_x = alien_width
             current_y += 2 * alien_height
 
-        self.new_fleet_sound.play()
+        #self.new_fleet_sound.play()
 
     def _check_fleet_edges(self):
         '''Responde adecuadamente si algún alien ha llegado a un borde.'''

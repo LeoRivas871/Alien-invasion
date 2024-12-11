@@ -13,7 +13,7 @@ class Settings:
         self.ship_limit = 3
 
         #configuracion de las balas de la nave
-        self.bullet_width = 30
+        self.bullet_width = 3000
         self.bullet_height = 15
         self.bullet_color = (60,60,60)
         self.bullets_allowed = 3
