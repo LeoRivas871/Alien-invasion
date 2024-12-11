@@ -11,7 +11,7 @@ from bullet import Bullet
 from alien import Alien
 from alien_bullet import AlienBullet
 from shield import Shield
-#V2 - se incluye sonido.
+#V2 - se incluye sonido
 
 class AlienInvasion:
     '''Clase general para gestionar los recursos y el comportamiento del juego'''
@@ -26,6 +26,10 @@ class AlienInvasion:
         self.settings.screen_width = self.screen.get_rect().width
         self.settings.screen_height = self.screen.get_rect().height
         pygame.display.set_caption('Alien Invasion')
+
+        #Cargar sonido de colisión.
+        self.alien_hit_sound = pygame.mixer.Sound('sounds/alien_hit.mp3.mp3')
+
         #Crea una instancia para guardar las estadisticas del juego.
         #Y crea un marcador.
         self.stats = GameStats(self)
@@ -178,8 +182,10 @@ class AlienInvasion:
         collisions = pygame.sprite.groupcollide(self.bullets,self.aliens,True,True)
 
         if collisions:
+            #Reproduce el sonido para cada alien que es alcanzado
             for aliens in collisions.values():
                 self.stats.score += self.settings.alien_points + len(self.aliens)
+                self.alien_hit_sound.play() # Sonido de colisión
             self.sb.prep_score()
             self.sb.check_high_score()
 
