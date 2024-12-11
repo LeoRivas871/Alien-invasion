@@ -29,7 +29,7 @@ class AlienInvasion:
 
         #Cargar sonido de colisión.
         self.alien_hit_sound = pygame.mixer.Sound('sounds/alien_hit.mp3.mp3')
-
+        self.new_fleet_sound = pygame.mixer.Sound('sounds/nueva_flota.mp3')
         #Crea una instancia para guardar las estadisticas del juego.
         #Y crea un marcador.
         self.stats = GameStats(self)
@@ -206,6 +206,7 @@ class AlienInvasion:
         '''Crea la flota de alienígenas.'''
         #Crea un alienigena y va añadiendo alienigenas hasta que no haya espacio.
         #El espaciado entre alienigenas es de un alien de ancho y otro de alto.
+        self.aliens.empty()
         alien = Alien(self)
         alien_width, alien_height = alien.rect.size
 
@@ -218,6 +219,8 @@ class AlienInvasion:
             #Fila terminada; resetea valor de x e incrementa valor de y.
             current_x = alien_width
             current_y += 2 * alien_height
+
+        self.new_fleet_sound.play()
 
     def _check_fleet_edges(self):
         '''Responde adecuadamente si algún alien ha llegado a un borde.'''
