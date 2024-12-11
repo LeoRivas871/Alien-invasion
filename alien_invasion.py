@@ -30,7 +30,9 @@ class AlienInvasion:
         #Cargar sonido de colisión.
         self.alien_hit_sound = pygame.mixer.Sound('sounds/alien_hit.mp3.mp3')
         self.new_fleet_sound = pygame.mixer.Sound('sounds/nueva_flota.mp3')
-        self.bandera_sonido_flota = False
+        self.init_sound = pygame.mixer.Sound('sounds/inicial.mp3')
+        self.bandera_inicio_musica = True
+        self.first_fleet_created = False
 
         #Crea una instancia para guardar las estadisticas del juego.
         #Y crea un marcador.
@@ -50,16 +52,21 @@ class AlienInvasion:
         #Inicia Alien Invasion en estado activo.
         self.game_active = False
 
+
+
         #Crea el boton play.
         self.play_button = Button(self,'Play')
-        #configura el color de fondo.
-        #self.bg_color = (230,230,230)
+
+        # Reproduce la música de introducción en bucle
+        self.init_sound.play(-1)
 
     def run_game(self):
         '''Inicia el bucle principal para el juego'''
         while True:
             self._check_events()
             if self.game_active:
+                self.init_sound.set_volume(0)
+                self.init_sound.stop()
                 self.ship.update()
                 self._update_bullets()
                 self._update_aliens()
@@ -108,6 +115,9 @@ class AlienInvasion:
 
         # Oculta el cursor del ratón.
         pygame.mouse.set_visible(False)
+
+        # Detiene la música de introducción
+        self.init_sound.stop()
 
     def _check_keydown_events(self,event):
         '''Responde a las pulsaciones de teclas.'''
@@ -209,6 +219,7 @@ class AlienInvasion:
         #Aumenta el nivel.
         self.stats.level += 1
         self.sb.prep_level()
+        self.init_sound.stop()
 
     def _create_fleet(self):
         '''Crea la flota de alienígenas.'''
@@ -228,7 +239,12 @@ class AlienInvasion:
             current_x = alien_width
             current_y += 2 * alien_height
 
-        #self.new_fleet_sound.play()
+
+
+        if self.first_fleet_created:
+            self.init_sound.play()
+        else:
+            self.first_fleet_created = True
 
     def _check_fleet_edges(self):
         '''Responde adecuadamente si algún alien ha llegado a un borde.'''
