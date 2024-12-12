@@ -11,7 +11,7 @@ from bullet import Bullet
 from alien import Alien
 from alien_bullet import AlienBullet
 from shield import Shield
-#V2 - se incluye sonido
+from sounds import Sounds
 
 class AlienInvasion:
     '''Clase general para gestionar los recursos y el comportamiento del juego'''
@@ -27,12 +27,8 @@ class AlienInvasion:
         self.settings.screen_height = self.screen.get_rect().height
         pygame.display.set_caption('Alien Invasion')
 
-        #Cargar sonido de colisión.
-        self.alien_hit_sound = pygame.mixer.Sound('sounds/alien_hit.mp3.mp3')
-        self.new_fleet_sound = pygame.mixer.Sound('sounds/nueva_flota.mp3')
-        self.init_sound = pygame.mixer.Sound('sounds/inicial.mp3')
-        self.bandera_inicio_musica = True
-        self.first_fleet_created = False
+        #Cargar sonidos.
+        self.sound = Sounds()
 
         #Crea una instancia para guardar las estadisticas del juego.
         #Y crea un marcador.
@@ -58,15 +54,15 @@ class AlienInvasion:
         self.play_button = Button(self,'Play')
 
         # Reproduce la música de introducción en bucle
-        self.init_sound.play(-1)
+        self.sound.init_sound.play(-1)
 
     def run_game(self):
         '''Inicia el bucle principal para el juego'''
         while True:
             self._check_events()
             if self.game_active:
-                self.init_sound.set_volume(0)
-                self.init_sound.stop()
+                self.sound.init_sound.set_volume(0) #Se ajusta el sonido para que no se escuche al desaparecer la flota
+                self.sound.init_sound.stop() #Se elimina el sonido para que no se siga reproduciendo en silencio
                 self.ship.update()
                 self._update_bullets()
                 self._update_aliens()
@@ -117,7 +113,7 @@ class AlienInvasion:
         pygame.mouse.set_visible(False)
 
         # Detiene la música de introducción
-        self.init_sound.stop()
+        self.sound.init_sound.stop()
 
     def _check_keydown_events(self,event):
         '''Responde a las pulsaciones de teclas.'''
@@ -197,12 +193,12 @@ class AlienInvasion:
             #Reproduce el sonido para cada alien que es alcanzado
             for aliens in collisions.values():
                 self.stats.score += self.settings.alien_points + len(self.aliens)
-                self.alien_hit_sound.play() # Sonido de colisión
+                self.sound.alien_hit_sound.play() # Sonido de colisión
             self.sb.prep_score()
             self.sb.check_high_score()
 
         if not self.aliens:
-            self.new_fleet_sound.play()
+            self.sound.new_fleet_sound.play()  #Cada que se elimina una flota, la siguiente reaparece haciendo un sonido
 
         if not self.aliens:
             self._start_new_level()
@@ -219,7 +215,7 @@ class AlienInvasion:
         #Aumenta el nivel.
         self.stats.level += 1
         self.sb.prep_level()
-        self.init_sound.stop()
+        self.sound.init_sound.stop()
 
     def _create_fleet(self):
         '''Crea la flota de alienígenas.'''
@@ -238,13 +234,6 @@ class AlienInvasion:
             #Fila terminada; resetea valor de x e incrementa valor de y.
             current_x = alien_width
             current_y += 2 * alien_height
-
-
-
-        if self.first_fleet_created:
-            self.init_sound.play()
-        else:
-            self.first_fleet_created = True
 
     def _check_fleet_edges(self):
         '''Responde adecuadamente si algún alien ha llegado a un borde.'''
