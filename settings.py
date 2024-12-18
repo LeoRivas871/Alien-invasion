@@ -13,14 +13,15 @@ class Settings:
         self.ship_limit = 3
 
         #configuracion de las balas de la nave
-        self.bullet_width = 3000
+        self.bullet_width = 30
         self.bullet_height = 15
         self.bullet_color = (60,60,60)
         self.bullets_allowed = 3
 
         #Configuraciones del alien
-        self.fleet_drop_speed = 100
+        self.fleet_drop_speed = 10
         #Configuración de las balas alienígenas
+        self.alien_bullet_color = (60, 60, 60)
         self.alien_bullet_speed = 1.0 #Velocidad de las balas disparadas por los aliens.
         self.alien_fire_chance = 2  # Porcentaje de probabilidad de disparo en cada fotograma.
 

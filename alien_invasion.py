@@ -159,7 +159,6 @@ class AlienInvasion:
     def _update_alien_bullets(self):
         '''Actualiza la posición de las balas alienígenas y comprueba colisiones.'''
         self.alien_bullets.update() #Actualiza todas las balas.
-
         #Elimina las balas que salen de la pantalla.
         for bullet in self.alien_bullets.copy():
             if bullet.rect.top >= self.settings.screen_height:
@@ -290,6 +289,7 @@ class AlienInvasion:
             sleep(0.5)
         else:
             self.game_active = False
+            self.sound.end_game.play()
             pygame.mouse.set_visible(True)
 
 
