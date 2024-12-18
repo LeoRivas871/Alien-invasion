@@ -49,12 +49,6 @@ class AlienInvasion:
         #Inicia Alien Invasion en estado activo.
         self.game_active = False
 
-
-        #Crea el boton play.
-        self.play_button = Button(self,'Play')
-
-
-
         #Crea el boton play.
         self.play_button = Button(self,'Play')
 
@@ -220,7 +214,7 @@ class AlienInvasion:
         self.sb.prep_level()
 
         self.sound.init_sound.stop()
-
+        self.sound.new_fleet_sound.play()
 
     def _create_fleet(self):
         '''Crea la flota de alienígenas.'''
