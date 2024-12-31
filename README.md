@@ -1,7 +1,7 @@
 # Alien Invasion
 
 Mi primer juego desarrollado en Python.
-Es un proyecto de aprendizaje.
+(Es un proyecto de aprendizaje).
 ## Descripción
 
 Alien Invasion es un juego sencillo donde el jugador debe defender la Tierra de una invasión alienígena. 
@@ -32,13 +32,21 @@ python alien_invasion.py
 Estructura del Proyecto
 Alien-invasion/
 ├── images/             # Imágenes usadas en el juego
+
 ├── sounds/             # Sonidos usados en el juego
+
 ├── alien_invasion.py   # Archivo principal para ejecutar el juego
+
 ├── game_functions.py   # Funciones auxiliares del juego
+
 ├── settings.py         # Configuraciones del juego
+
 ├── ship.py             # Clase para la nave espacial
+
 ├── alien.py            # Clase para los alienígenas
+
 ├── bullet.py           # Clase para las balas
+
 └── README.md           # Este archivo
 
 ## Contribución
